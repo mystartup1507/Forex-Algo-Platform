@@ -1,9 +1,9 @@
 import React from 'react';
 
 import {
-  TrendingUp,
   Wallet,
-  Activity,
+  TrendingUp,
+  Briefcase,
   Clock3
 } from 'lucide-react';
 
@@ -18,24 +18,6 @@ const StatsCards = ({
 
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-      <div className="bg-zinc-900 border border-green-500/40 rounded-3xl p-8">
-
-        <div className="flex justify-between items-center mb-5">
-
-          <h3 className="text-zinc-400">
-            Today P/L
-          </h3>
-
-          <TrendingUp className="text-green-400" />
-
-        </div>
-
-        <p className="text-5xl font-black text-green-400">
-          ₹{runningPL}
-        </p>
-
-      </div>
-
       <div className="bg-zinc-900 border border-cyan-500/40 rounded-3xl p-8">
 
         <div className="flex justify-between items-center mb-5">
@@ -49,7 +31,25 @@ const StatsCards = ({
         </div>
 
         <p className="text-5xl font-black text-cyan-400">
-          ₹{availableBalance}
+          ₹ {Number(availableBalance).toLocaleString()}
+        </p>
+
+      </div>
+
+      <div className="bg-zinc-900 border border-green-500/40 rounded-3xl p-8">
+
+        <div className="flex justify-between items-center mb-5">
+
+          <h3 className="text-zinc-400">
+            Today's P&L
+          </h3>
+
+          <TrendingUp className="text-green-400" />
+
+        </div>
+
+        <p className="text-5xl font-black text-green-400">
+          ₹ {Number(runningPL).toLocaleString()}
         </p>
 
       </div>
@@ -59,10 +59,10 @@ const StatsCards = ({
         <div className="flex justify-between items-center mb-5">
 
           <h3 className="text-zinc-400">
-            Running Trades
+            Open Positions
           </h3>
 
-          <Activity className="text-yellow-400" />
+          <Briefcase className="text-yellow-400" />
 
         </div>
 
@@ -84,7 +84,7 @@ const StatsCards = ({
 
         </div>
 
-        <p className="text-4xl font-black text-purple-400">
+        <p className="text-3xl font-black text-purple-400">
           {currentTime}
         </p>
 

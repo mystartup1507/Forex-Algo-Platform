@@ -2,22 +2,43 @@ import React from 'react';
 
 const ActiveTrades = () => {
 
-  const trades = [];
+  const activities = [
+    {
+      time: '09:15 AM',
+      message: 'Angel One connection established'
+    },
+    {
+      time: '09:16 AM',
+      message: 'Market data feed started'
+    },
+    {
+      time: '09:17 AM',
+      message: 'AI Engine initialized'
+    },
+    {
+      time: '09:18 AM',
+      message: 'Scanning NSE instruments'
+    },
+    {
+      time: 'Live',
+      message: 'Waiting for high probability setup'
+    }
+  ];
 
   return (
 
-    <div className="bg-zinc-900 border border-yellow-500/30 rounded-3xl p-8 space-y-6">
+    <div className="bg-zinc-900 border border-cyan-500/30 rounded-3xl p-8 space-y-6">
 
       <div className="flex justify-between items-center">
 
         <div>
 
-          <h2 className="text-3xl font-bold text-yellow-400">
-            Active Trades
+          <h2 className="text-3xl font-bold text-cyan-400">
+            Activity Log
           </h2>
 
           <p className="text-zinc-500 mt-1">
-            Live AI Managed Positions
+            Live Platform Events
           </p>
 
         </div>
@@ -28,102 +49,24 @@ const ActiveTrades = () => {
 
       <div className="space-y-4">
 
-        {trades.length === 0 ? (
+        {activities.map((item, index) => (
 
-          <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-12 text-center">
+          <div
+            key={index}
+            className="bg-zinc-800 border border-zinc-700 rounded-2xl p-5 flex justify-between items-center"
+          >
 
-            <h3 className="text-3xl font-bold text-zinc-400 mb-4">
-              No Active Trades
-            </h3>
+            <span className="text-cyan-400 font-semibold">
+              {item.time}
+            </span>
 
-            <p className="text-zinc-500">
-              AI Engine is scanning markets for high probability opportunities.
-            </p>
+            <span className="text-zinc-300">
+              {item.message}
+            </span>
 
           </div>
 
-        ) : (
-
-          trades.map((trade, index) => (
-
-            <div
-              key={index}
-              className="bg-zinc-800 border border-zinc-700 rounded-2xl p-5"
-            >
-
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center">
-
-                <div>
-
-                  <p className="text-zinc-500 text-sm">
-                    Pair
-                  </p>
-
-                  <h3 className="text-xl font-bold text-white">
-                    {trade.pair}
-                  </h3>
-
-                </div>
-
-                <div>
-
-                  <p className="text-zinc-500 text-sm">
-                    Type
-                  </p>
-
-                  <h3 className={
-                    trade.type === 'BUY'
-                      ? 'text-xl font-bold text-green-400'
-                      : 'text-xl font-bold text-red-400'
-                  }>
-                    {trade.type}
-                  </h3>
-
-                </div>
-
-                <div>
-
-                  <p className="text-zinc-500 text-sm">
-                    Entry
-                  </p>
-
-                  <h3 className="text-xl font-bold text-cyan-400">
-                    {trade.entry}
-                  </h3>
-
-                </div>
-
-                <div>
-
-                  <p className="text-zinc-500 text-sm">
-                    P/L
-                  </p>
-
-                  <h3 className="text-xl font-bold text-green-400">
-                    {trade.pnl}
-                  </h3>
-
-                </div>
-
-                <div>
-
-                  <p className="text-zinc-500 text-sm">
-                    Status
-                  </p>
-
-                  <h3 className="text-xl font-bold text-yellow-400">
-                    {trade.status}
-                  </h3>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          ))
-
-        )}
+        ))}
 
       </div>
 

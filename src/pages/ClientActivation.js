@@ -79,7 +79,7 @@ localStorage.setItem(
 
         <input
           type="text"
-          placeholder="JD-XXXXXXX"
+          placeholder="FAP-XXXXXXX"
           value={licenseKey}
           onChange={(e) =>
             setLicenseKey(

@@ -5,7 +5,7 @@ import {
   Wifi,
   ShieldCheck,
   Server,
-  PlugZap
+  Landmark
 } from 'lucide-react';
 
 const StatusCards = ({
@@ -21,17 +21,19 @@ const StatusCards = ({
 
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-zinc-400 text-sm">
-            Broker
+            Angel One
           </h3>
 
-          <PlugZap className="text-green-400" />
+          <Landmark className="text-green-400" />
         </div>
 
-        <p className={
-          brokerConnected
-            ? 'text-2xl font-bold text-green-400'
-            : 'text-2xl font-bold text-red-400'
-        }>
+        <p
+          className={
+            brokerConnected
+              ? 'text-2xl font-bold text-green-400'
+              : 'text-2xl font-bold text-red-400'
+          }
+        >
           {
             brokerConnected
               ? 'CONNECTED'
@@ -51,11 +53,13 @@ const StatusCards = ({
           <Activity className="text-purple-400" />
         </div>
 
-        <p className={
-          algoRunning
-            ? 'text-2xl font-bold text-green-400'
-            : 'text-2xl font-bold text-red-400'
-        }>
+        <p
+          className={
+            algoRunning
+              ? 'text-2xl font-bold text-green-400'
+              : 'text-2xl font-bold text-red-400'
+          }
+        >
           {
             algoRunning
               ? 'RUNNING'

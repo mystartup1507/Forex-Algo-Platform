@@ -2,11 +2,6 @@ import React from 'react';
 
 const AIEngineStatus = () => {
 
-  const marketCondition = 'TRENDING';
-  const aiConfidence = '82%';
-  const marketBias = 'BULLISH';
-  const aiStatus = 'SCANNING';
-
   return (
 
     <div className="bg-zinc-900 border border-cyan-500/30 rounded-3xl p-8 space-y-6">
@@ -16,11 +11,11 @@ const AIEngineStatus = () => {
         <div>
 
           <h2 className="text-3xl font-bold text-cyan-400">
-            AI Engine
+            AI Strategy Dashboard
           </h2>
 
           <p className="text-zinc-500 mt-1">
-            Autonomous Market Intelligence
+            Real-Time Trading Intelligence
           </p>
 
         </div>
@@ -29,54 +24,60 @@ const AIEngineStatus = () => {
 
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         <div className="bg-zinc-800 rounded-2xl p-5 border border-zinc-700">
-
           <p className="text-zinc-500 text-sm mb-2">
-            Market Condition
+            Strategy
           </p>
-
-          <h3 className="text-2xl font-bold text-green-400">
-            {marketCondition}
+          <h3 className="text-xl font-bold text-green-400">
+            Trend Following
           </h3>
-
         </div>
 
         <div className="bg-zinc-800 rounded-2xl p-5 border border-zinc-700">
-
           <p className="text-zinc-500 text-sm mb-2">
-            AI Confidence
+            Execution Mode
           </p>
-
-          <h3 className="text-2xl font-bold text-cyan-400">
-            {aiConfidence}
+          <h3 className="text-xl font-bold text-cyan-400">
+            Automatic
           </h3>
-
         </div>
 
         <div className="bg-zinc-800 rounded-2xl p-5 border border-zinc-700">
-
           <p className="text-zinc-500 text-sm mb-2">
-            Current Bias
+            Risk Level
           </p>
-
-          <h3 className="text-2xl font-bold text-yellow-400">
-            {marketBias}
+          <h3 className="text-xl font-bold text-yellow-400">
+            Medium
           </h3>
-
         </div>
 
         <div className="bg-zinc-800 rounded-2xl p-5 border border-zinc-700">
-
           <p className="text-zinc-500 text-sm mb-2">
-            AI Status
+            Current Signal
           </p>
-
-          <h3 className="text-2xl font-bold text-purple-400">
-            {aiStatus}
+          <h3 className="text-xl font-bold text-purple-400">
+            Waiting for Entry
           </h3>
+        </div>
 
+        <div className="bg-zinc-800 rounded-2xl p-5 border border-zinc-700">
+          <p className="text-zinc-500 text-sm mb-2">
+            Trading Session
+          </p>
+          <h3 className="text-xl font-bold text-orange-400">
+            NSE Live
+          </h3>
+        </div>
+
+        <div className="bg-zinc-800 rounded-2xl p-5 border border-zinc-700">
+          <p className="text-zinc-500 text-sm mb-2">
+            Engine Health
+          </p>
+          <h3 className="text-xl font-bold text-green-400">
+            Operational
+          </h3>
         </div>
 
       </div>

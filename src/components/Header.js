@@ -3,13 +3,13 @@ import { LogOut } from 'lucide-react';
 
 const Header = () => {
 
-const logout = () => {
+  const logout = () => {
 
-  localStorage.clear();
+    localStorage.clear();
+    window.location.href = '/';
 
-  window.location.href = '/';
+  };
 
-};
   return (
 
     <header className="border-b border-purple-500/30 bg-zinc-950/80 px-8 py-6">
@@ -22,15 +22,15 @@ const logout = () => {
             Forex Algo Platform
           </h1>
 
-          <p className="text-zinc-400 mt-2">
-            Multi-Market Execution Terminal
+          <p className="text-zinc-400 mt-2 text-lg">
+            Angel One Algo Trading Platform
           </p>
 
         </div>
 
         <button
           onClick={logout}
-          className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-2xl flex items-center gap-2"
+          className="bg-red-600 hover:bg-red-700 transition-all px-6 py-3 rounded-2xl flex items-center gap-2 font-semibold"
         >
           <LogOut size={18} />
           Logout

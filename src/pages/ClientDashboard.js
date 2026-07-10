@@ -3,6 +3,8 @@ import React, {
   useState
 } from 'react';
 
+import ActiveTrades from '../components/ActiveTrades';
+
 import Header from '../components/Header';
 import StatusCards from '../components/StatusCards';
 import MarketSelector from '../components/MarketSelector';
@@ -30,11 +32,7 @@ const ClientDashboard = () => {
   const [positions, setPositions] =
     useState([]);
 
-  const [selectedMarket, setSelectedMarket] =
-    useState('indian');
 
-  const [selectedBroker, setSelectedBroker] =
-    useState('angel');
 
   const [tradingMode, setTradingMode] =
     useState('auto');
@@ -53,19 +51,15 @@ const ClientDashboard = () => {
       server: ''
     });
 
-  useEffect(() => {
+ useEffect(() => {
 
     const activated =
-      localStorage.getItem(
-        'licenseActivated'
-      );
+  localStorage.getItem('licenseActivated');
 
-    if (activated !== 'true') {
-
-      window.location.href = '/';
-      return;
-
-    }
+if (activated !== 'true') {
+  window.location.href = '/';
+  return;
+}
 
     const timer = setInterval(() => {
 
@@ -79,19 +73,7 @@ const ClientDashboard = () => {
 
   }, []);
 
-  useEffect(() => {
 
-    if (selectedMarket === 'indian') {
-
-      setSelectedBroker('angel');
-
-    } else {
-
-      setSelectedBroker('mt5');
-
-    }
-
-  }, [selectedMarket]);
 
   const connectBroker = async () => {
 
@@ -126,9 +108,8 @@ const ClientDashboard = () => {
               apiKey:
                 'QTgnsVLk',
 
-              broker:
-                selectedBroker,
-
+              broker: 'angel',
+                
               clientId:
                 connectionData.clientId,
 
@@ -329,31 +310,30 @@ const data =
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-          <MarketSelector
-            selectedMarket={selectedMarket}
-            setSelectedMarket={setSelectedMarket}
-            selectedBroker={selectedBroker}
-            setSelectedBroker={setSelectedBroker}
-            tradingMode={tradingMode}
-            setTradingMode={setTradingMode}
-            selectedPair={selectedPair}
-            setSelectedPair={setSelectedPair}
-          />
+<MarketSelector
+  tradingMode={tradingMode}
+  setTradingMode={setTradingMode}
+  selectedPair={selectedPair}
+  setSelectedPair={setSelectedPair}
+/>
 
-          <BrokerPanel
-            selectedMarket={selectedMarket}
-            connectionData={connectionData}
-            setConnectionData={setConnectionData}
-            brokerConnected={brokerConnected}
-            connectBroker={connectBroker}
-            disconnectBroker={disconnectBroker}
-            algoRunning={algoRunning}
-            toggleAlgo={toggleAlgo}
-          />
+<BrokerPanel
+  connectionData={connectionData}
+  setConnectionData={setConnectionData}
+  brokerConnected={brokerConnected}
+  connectBroker={connectBroker}
+  disconnectBroker={disconnectBroker}
+  algoRunning={algoRunning}
+  toggleAlgo={toggleAlgo}
+/>
+        
 
         </div>
 
-        <AIEngineStatus />
+        <>
+  <AIEngineStatus />
+  <ActiveTrades />
+</>
 
         <div className="bg-zinc-950 border border-cyan-500/20 rounded-2xl p-6">
 

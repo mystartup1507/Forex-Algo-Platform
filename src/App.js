@@ -5,11 +5,8 @@ import {
   Navigate
 } from 'react-router-dom';
 
-import ClientActivation
-from './pages/ClientActivation';
-
-import ClientDashboard
-from './pages/ClientDashboard';
+import ClientActivation from './pages/ClientActivation';
+import ClientDashboard from './pages/ClientDashboard';
 
 function App() {
 
