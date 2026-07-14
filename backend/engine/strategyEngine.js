@@ -64,51 +64,90 @@ const lastEMA21 = ema.ema21.at(-1);
         const lastClose =
             closes.at(-1);
 
-        let confidence = 0;
+        let buyConfidence = 0;
+        let sellConfidence = 0;
 
         const emaBullishCross =
-    prevEMA9 <= prevEMA21 &&
-    lastEMA9 > lastEMA21;
+            prevEMA9 <= prevEMA21 &&
+            lastEMA9 > lastEMA21;
 
-if (emaBullishCross)
-    confidence += 20;
+        const emaBearishCross =
+            prevEMA9 >= prevEMA21 &&
+            lastEMA9 < lastEMA21;
 
-        if (lastRSI > 55)
-            confidence += 20;
+        if (emaBullishCross) buyConfidence += 20;
+        if (emaBearishCross) sellConfidence += 20;
 
-        if (lastClose > lastVWAP)
-            confidence += 20;
+        if (lastRSI > 55) buyConfidence += 20;
+        if (lastRSI < 45) sellConfidence += 20;
 
-        if (volume.highVolume)
-            confidence += 20;
+        if (lastClose > lastVWAP) buyConfidence += 20;
+        if (lastClose < lastVWAP) sellConfidence += 20;
 
-        if (
-            supertrend.length &&
-            supertrend.at(-1).direction === "BUY"
-        )
-            confidence += 20;
+        if (volume.highVolume) {
+            buyConfidence += 20;
+            sellConfidence += 20;
+        }
+
+        const stDirection =
+            supertrend.length
+                ? supertrend.at(-1).direction
+                : "NONE";
+
+        if (stDirection === "BUY") buyConfidence += 20;
+        if (stDirection === "SELL") sellConfidence += 20;
 
         console.log({
-    emaBullishCross,
-    rsi: lastRSI,
-    vwap: lastClose > lastVWAP,
-    volume: volume.highVolume,
-    supertrend:
-        supertrend.at(-1).direction,
-    confidence
-});
+            buyConfidence,
+            sellConfidence,
+            rsi:lastRSI,
+            supertrend:stDirection
+        });
 
         if (
-            confidence >=
-            config.ai.confidenceThreshold
+            buyConfidence >= config.ai.confidenceThreshold &&
+            buyConfidence >= sellConfidence
         ) {
 
             return {
 
                 signal: "BUY",
 
+                confidence: buyConfidence,
 
-                confidence,
+                indicators: {
+
+                    ema9: lastEMA9,
+
+                    ema21: lastEMA21,
+
+                    rsi: lastRSI,
+
+                    atr: atr.at(-1),
+
+                    vwap: lastVWAP,
+
+                    supertrend:
+                        supertrend.at(-1),
+
+                    volume
+
+                }
+
+            };
+
+        }
+
+        if (
+            sellConfidence >= config.ai.confidenceThreshold &&
+            sellConfidence > buyConfidence
+        ) {
+
+            return {
+
+                signal: "SELL",
+
+                confidence: sellConfidence,
 
                 indicators: {
 
@@ -137,7 +176,7 @@ return {
 
     signal: "WAIT",
 
-    confidence,
+    confidence: Math.max(buyConfidence, sellConfidence),
 
     reason: {
 
