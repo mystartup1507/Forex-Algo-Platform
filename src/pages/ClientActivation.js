@@ -2,62 +2,82 @@ import React, { useState } from 'react';
 
 const ClientActivation = () => {
 
-  const [licenseKey, setLicenseKey] =
-    useState('');
+  const [licenseKey, setLicenseKey] = useState('');
+  const [message, setMessage] = useState('');
 
-  const [message, setMessage] =
-    useState('');
+  const getDeviceId = () => {
+
+    let deviceId = localStorage.getItem('deviceId');
+
+    if (!deviceId) {
+
+      deviceId = crypto.randomUUID();
+
+      localStorage.setItem(
+        'deviceId',
+        deviceId
+      );
+
+    }
+
+    return deviceId;
+
+  };
 
   const activateLicense = async () => {
 
     try {
+
+      const deviceId = getDeviceId();
+
+      console.log("Device ID:", deviceId);
+      console.log("License:", licenseKey);
+
+      const payload = {
+        licenseKey: licenseKey.trim(),
+        deviceId
+      };
+
+      console.log("Payload:", payload);
 
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/license/validate`,
         {
           method: 'POST',
           headers: {
-            'Content-Type':
-              'application/json'
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            licenseKey
-          })
+          body: JSON.stringify(payload)
         }
       );
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
-    if (data.success) {
+      if (data.success) {
 
-localStorage.clear();
-
-localStorage.setItem(
-  'licenseActivated',
-  'true'
-);
-
-localStorage.setItem(
-  'licenseKey',
-  licenseKey.trim()
-);
-
-  window.location.href = '/dashboard';
-
-} else {
-
-        setMessage(
-          data.message
+        localStorage.setItem(
+          'licenseActivated',
+          'true'
         );
+
+        localStorage.setItem(
+          'licenseKey',
+          licenseKey.trim()
+        );
+
+        window.location.href = '/dashboard';
+
+      } else {
+
+        setMessage(data.message);
 
       }
 
     } catch (error) {
 
-      setMessage(
-        'Server Error'
-      );
+      console.error(error);
+
+      setMessage('Server Error');
 
     }
 
@@ -81,11 +101,7 @@ localStorage.setItem(
           type="text"
           placeholder="FAP-XXXXXXX"
           value={licenseKey}
-          onChange={(e) =>
-            setLicenseKey(
-              e.target.value
-            )
-          }
+          onChange={(e) => setLicenseKey(e.target.value)}
           className="w-full p-4 rounded-xl bg-zinc-800 mb-6 outline-none"
         />
 
@@ -97,11 +113,9 @@ localStorage.setItem(
         </button>
 
         {message && (
-
           <p className="text-red-400 mt-6 text-center">
             {message}
           </p>
-
         )}
 
       </div>

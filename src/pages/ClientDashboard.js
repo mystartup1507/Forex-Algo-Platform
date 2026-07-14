@@ -2,15 +2,15 @@ import React, {
   useEffect,
   useState
 } from 'react';
-
-import ActiveTrades from '../components/ActiveTrades';
+import { toast } from 'react-hot-toast';
 
 import Header from '../components/Header';
 import StatusCards from '../components/StatusCards';
 import MarketSelector from '../components/MarketSelector';
 import BrokerPanel from '../components/BrokerPanel';
-import StatsCards from '../components/StatsCards';
 import AIEngineStatus from '../components/AIEngineStatus';
+import ActiveTrades from '../components/ActiveTrades';
+import StatsCards from '../components/StatsCards';
 
 const ClientDashboard = () => {
 
@@ -32,8 +32,6 @@ const ClientDashboard = () => {
   const [positions, setPositions] =
     useState([]);
 
-
-
   const [tradingMode, setTradingMode] =
     useState('auto');
 
@@ -51,29 +49,30 @@ const ClientDashboard = () => {
       server: ''
     });
 
- useEffect(() => {
+  useEffect(() => {
 
     const activated =
-  localStorage.getItem('licenseActivated');
+      localStorage.getItem('licenseActivated');
 
-if (activated !== 'true') {
-  window.location.href = '/';
-  return;
-}
+    if (activated !== 'true') {
 
-    const timer = setInterval(() => {
+      window.location.href = '/';
+      return;
 
-      setCurrentTime(
-        new Date().toLocaleTimeString()
-      );
+    }
 
-    }, 1000);
+    const timer =
+      setInterval(() => {
+
+        setCurrentTime(
+          new Date().toLocaleTimeString()
+        );
+
+      }, 1000);
 
     return () => clearInterval(timer);
 
   }, []);
-
-
 
   const connectBroker = async () => {
 
@@ -84,9 +83,7 @@ if (activated !== 'true') {
         !connectionData.password
       ) {
 
-        alert(
-          'Please fill broker credentials'
-        );
+        toast.error('Please fill broker credentials');
 
         return;
 
@@ -94,7 +91,7 @@ if (activated !== 'true') {
 
       const response =
         await fetch(
-          'https://jdalgoapi.duckdns.org/api/broker/connect',
+          'https://forexalgoapi.duckdns.org/api/broker/connect',
           {
             method: 'POST',
 
@@ -105,11 +102,10 @@ if (activated !== 'true') {
 
             body: JSON.stringify({
 
-              apiKey:
-                'QTgnsVLk',
+              apiKey: 'TTkHGDYk',
 
               broker: 'angel',
-                
+
               clientId:
                 connectionData.clientId,
 
@@ -129,7 +125,7 @@ if (activated !== 'true') {
 
       if (!data.success) {
 
-        alert(data.message);
+        toast.error(data.message);
         return;
 
       }
@@ -143,7 +139,7 @@ if (activated !== 'true') {
 
       const profileResponse =
         await fetch(
-          'https://jdalgoapi.duckdns.org/api/broker/profile',
+          'https://forexalgoapi.duckdns.org/api/broker/profile',
           {
             method: 'POST',
 
@@ -154,8 +150,7 @@ if (activated !== 'true') {
 
             body: JSON.stringify({
 
-              apiKey:
-                'QTgnsVLk',
+              apiKey: 'TTkHGDYk',
 
               clientId:
                 connectionData.clientId,
@@ -176,26 +171,22 @@ if (activated !== 'true') {
 
       if (profileData.success) {
 
-      setAvailableBalance(
+        setAvailableBalance(
           profileData.rms?.data?.availablecash || 0
         );
 
       }
 
       setPositions([]);
-setRunningTrades(0);
+      setRunningTrades(0);
 
-      alert(
-        'Broker Connected Successfully'
-      );
+      toast.success('Broker Connected Successfully');
 
     } catch (error) {
 
       console.log(error);
 
-      alert(
-        'Connection Error'
-      );
+      toast.error('Connection Error');
 
     }
 
@@ -211,9 +202,7 @@ setRunningTrades(0);
 
     setPositions([]);
 
-    alert(
-      'Broker Disconnected'
-    );
+    toast('Broker Disconnected',{icon:'ℹ️'});
 
   };
 
@@ -223,9 +212,7 @@ setRunningTrades(0);
 
       if (!brokerConnected) {
 
-        alert(
-          'Connect Broker First'
-        );
+        toast.warning ? toast.warning('Connect Broker First') : toast('Connect Broker First',{icon:'⚠️'});
 
         return;
 
@@ -235,61 +222,56 @@ setRunningTrades(0);
 
         setAlgoRunning(false);
 
-        alert(
-          'Algo Stopped'
-        );
+        toast('Algo Stopped',{icon:'⏹️'});
 
         return;
 
       }
 
-const response =
-  await fetch(
-    'https://jdalgoapi.duckdns.org/api/algo/start',
-    {
-      method: 'POST',
+      const response =
+        await fetch(
+          'https://forexalgoapi.duckdns.org/api/algo/start',
+          {
+            method: 'POST',
 
-      headers: {
-        'Content-Type': 'application/json'
-      },
+            headers: {
+              'Content-Type':
+                'application/json'
+            },
 
-      body: JSON.stringify({
+            body: JSON.stringify({
 
-        clientId:
-          connectionData.clientId,
+              clientId:
+                connectionData.clientId,
 
-        password:
-          connectionData.password,
+              password:
+                connectionData.password,
 
-        totp:
-          connectionData.totp
+              totp:
+                connectionData.totp
 
-      })
+            })
 
-    }
-  );
+          }
+        );
 
-const data =
-  await response.json();
+      const data =
+        await response.json();
 
       if (!data.success) {
 
-        alert(data.message);
+        toast.error(data.message);
         return;
 
       }
 
       setAlgoRunning(true);
 
-      alert(
-        'AI Engine Started'
-      );
+      toast.success('AI Engine Started');
 
     } catch (error) {
 
-      alert(
-        'Order Execution Failed'
-      );
+      toast.error('Order Execution Failed');
 
     }
 
@@ -297,115 +279,141 @@ const data =
 
   return (
 
-    <div className="min-h-screen bg-black text-white">
+    <div className="relative min-h-screen overflow-hidden bg-[#050914] text-white">
 
-      <Header />
+      {/* Background Effects */}
 
-      <main className="p-8 space-y-8">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
 
-        <StatusCards
-          brokerConnected={brokerConnected}
-          algoRunning={algoRunning}
-        />
+        <div className="absolute -top-64 -left-64 h-[850px] w-[850px] rounded-full bg-cyan-500/10 blur-[220px]" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="absolute top-0 right-[-250px] h-[900px] w-[900px] rounded-full bg-indigo-500/10 blur-[260px]" />
 
-<MarketSelector
-  tradingMode={tradingMode}
-  setTradingMode={setTradingMode}
-  selectedPair={selectedPair}
-  setSelectedPair={setSelectedPair}
-/>
+        <div className="absolute bottom-[-300px] left-1/2 h-[750px] w-[750px] -translate-x-1/2 rounded-full bg-violet-500/10 blur-[240px]" />
 
-<BrokerPanel
-  connectionData={connectionData}
-  setConnectionData={setConnectionData}
-  brokerConnected={brokerConnected}
-  connectBroker={connectBroker}
-  disconnectBroker={disconnectBroker}
-  algoRunning={algoRunning}
-  toggleAlgo={toggleAlgo}
-/>
-        
+      </div>
 
-        </div>
+      <div className="relative z-10">
 
-        <>
-  <AIEngineStatus />
-  <ActiveTrades />
-</>
+        <Header />
 
-        <div className="bg-zinc-950 border border-cyan-500/20 rounded-2xl p-6">
+        <main className="mx-auto max-w-[1650px] px-6 py-6">
 
-          <h2 className="text-2xl font-bold mb-6 text-cyan-400">
-            Live Positions
-          </h2>
+          <div className="space-y-6">
 
-          {
-            positions.length === 0 ? (
+            <StatusCards
+              brokerConnected={brokerConnected}
+              algoRunning={algoRunning}
+            />
 
-              <div className="text-zinc-400">
-                No Active Positions
-              </div>
+            <StatsCards
+              runningPL={runningPL}
+              availableBalance={availableBalance}
+              runningTrades={runningTrades}
+              currentTime={currentTime}
+            />
 
-            ) : (
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
 
-              positions.map((trade, index) => (
+              <MarketSelector
+                tradingMode={tradingMode}
+                setTradingMode={setTradingMode}
+                selectedPair={selectedPair}
+                setSelectedPair={setSelectedPair}
+              />
 
-                <div
-                  key={index}
-                  className="bg-zinc-900 p-4 rounded-xl mb-3"
-                >
+              <BrokerPanel
+                connectionData={connectionData}
+                setConnectionData={setConnectionData}
+                brokerConnected={brokerConnected}
+                connectBroker={connectBroker}
+                disconnectBroker={disconnectBroker}
+                algoRunning={algoRunning}
+                toggleAlgo={toggleAlgo}
+              />
 
-                  <div className="flex justify-between">
+            </div>
 
-                    <span>
-                      {trade.tradingsymbol}
-                    </span>
+            <AIEngineStatus />
 
-                    <span>
-                      Qty:
-                      {' '}
-                      {trade.netqty}
-                    </span>
+            <ActiveTrades />
 
-                  </div>
+            <div className="relative overflow-hidden rounded-[30px] border border-cyan-500/20 bg-gradient-to-br from-[#1a2134] via-[#141b2d] to-[#0f172a] p-6 backdrop-blur-3xl">
 
-                  <div className="flex justify-between mt-2">
+              <div className="absolute -top-24 right-0 h-60 w-60 rounded-full bg-cyan-500/10 blur-[120px]" />
 
-                    <span>
-                      Avg:
-                      {' '}
-                      ₹
-                      {trade.averageprice}
-                    </span>
+              <div className="flex items-center justify-between mb-5">
 
-                    <span>
-                      P/L:
-                      {' '}
-                      ₹
-                      {trade.pnl}
-                    </span>
+                <div>
 
-                  </div>
+                  <h2 className="text-[28px] font-black bg-gradient-to-r from-cyan-300 via-blue-400 to-violet-500 bg-clip-text text-transparent">
+                    Live Positions
+                  </h2>
+
+                  <p className="text-slate-400 mt-1">
+                    Active trades from Angel One
+                  </p>
 
                 </div>
 
-              ))
+                <span className="rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-2 text-cyan-300 text-sm">
+                  {positions.length} Active
+                </span>
 
-            )
-          }
+              </div>
 
-        </div>
+              {positions.length===0 ? (
 
-        <StatsCards
-          runningPL={runningPL}
-          availableBalance={availableBalance}
-          runningTrades={runningTrades}
-          currentTime={currentTime}
-        />
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] py-10 text-center text-slate-500">
+                  No Active Positions
+                </div>
 
-      </main>
+              ) : (
+
+                positions.map((trade,index)=>(
+
+                  <div key={index} className="mb-3 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 hover:border-cyan-400/30">
+
+                    <div className="flex justify-between items-center">
+
+                      <div>
+
+                        <div className="font-semibold text-white">{trade.tradingsymbol}</div>
+
+                        <div className="text-sm text-slate-500 mt-1">
+                          Avg ₹ {trade.averageprice}
+                        </div>
+
+                      </div>
+
+                      <span className="rounded-full bg-blue-500/15 border border-blue-500/20 px-3 py-1 text-blue-300 text-sm">
+                        Qty {trade.netqty}
+                      </span>
+
+                    </div>
+
+                    <div className="mt-4 flex justify-end">
+
+                      <span className={`rounded-full px-4 py-2 text-sm font-semibold ${Number(trade.pnl)>=0?'bg-emerald-500/15 text-emerald-300':'bg-red-500/15 text-red-300'}`}>
+                        ₹ {trade.pnl}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                ))
+
+              )}
+
+            </div>
+
+
+          </div>
+
+        </main>
+
+      </div>
 
     </div>
 
