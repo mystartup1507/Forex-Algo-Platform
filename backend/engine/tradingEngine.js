@@ -32,12 +32,29 @@ class TradingEngine {
 
       console.log(`Scanning ${marketData.symbol}...`);
 
-      const analysis =
-        strategyEngine.analyze(
-          marketData.candles
-        );
+     const analysis =
+    strategyEngine.analyze(
+        marketData.candles
+    );
 
-      console.log(analysis);
+console.log("\n==============================");
+console.log("SYMBOL :", marketData.symbol);
+console.log("SIGNAL :", analysis.signal);
+console.log("CONFIDENCE :", analysis.confidence);
+
+if (analysis.indicators) {
+
+    console.log("EMA 9 :", analysis.indicators.ema9);
+    console.log("EMA21 :", analysis.indicators.ema21);
+    console.log("RSI   :", analysis.indicators.rsi);
+    console.log("VWAP  :", analysis.indicators.vwap);
+    console.log("ATR   :", analysis.indicators.atr);
+    console.log("SUPER :", analysis.indicators.supertrend.direction);
+    console.log("VOLUME:", analysis.indicators.volume.highVolume);
+
+}
+
+console.log("==============================\n");
 
 if (
   Object.keys(this.activePositions).length > 0
